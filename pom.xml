@@ -1,0 +1,150 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.wuba</groupId>
+	<artifactId>wsilk-doc</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<asciidoctor.maven.plugin.version>2.2.2</asciidoctor.maven.plugin.version>
+		<asciidoctorj.version>2.5.5</asciidoctorj.version>
+		<asciidoctor-multipage.version>0.0.16</asciidoctor-multipage.version>
+		<jruby.version>9.3.4.0</jruby.version>
+
+	</properties>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>rubygems</groupId>
+			<artifactId>asciidoctor-multipage</artifactId>
+			<version>${asciidoctor-multipage.version}</version>
+			<type>gem</type>
+			<exclusions>
+				<exclusion>
+					<groupId>rubygems</groupId>
+					<artifactId>asciidoctor</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+	</dependencies>
+
+
+	<build>
+
+		<extensions>
+			<extension>
+				<groupId>org.torquebox.mojo</groupId>
+				<artifactId>mavengem-wagon</artifactId>
+				<version>1.0.3</version>
+			</extension>
+		</extensions>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+					<useIncrementalCompilation>false</useIncrementalCompilation>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>de.saumya.mojo</groupId>
+				<artifactId>gem-maven-plugin</artifactId>
+				<version>2.0.1</version>
+				<configuration>
+					<jrubyVersion>${jruby.version}</jrubyVersion>
+					<gemHome>${project.build.directory}/gems</gemHome>
+					<gemPath>${project.build.directory}/gems</gemPath>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install-gems</id>
+						<goals>
+							<goal>initialize</goal>
+						</goals>
+						<phase>initialize</phase>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<version>${asciidoctor.maven.plugin.version}</version>
+				<dependencies>
+
+					<dependency>
+						<groupId>org.jruby</groupId>
+						<artifactId>jruby-complete</artifactId>
+						<version>${jruby.version}</version>
+					</dependency>
+
+					<dependency>
+						<groupId>org.asciidoctor</groupId>
+						<artifactId>asciidoctorj</artifactId>
+						<version>${asciidoctorj.version}</version>
+					</dependency>
+				</dependencies>
+
+				<configuration>
+					<sourceDirectory>src/docs/asciidoc</sourceDirectory>
+					<attributes>
+						<basedir>${project.basedir}</basedir>
+						<project-version>${project.version}</project-version>
+						<sourcedir>${project.build.sourceDirectory}</sourcedir>
+						<source-highlighter>rouge</source-highlighter>
+						<rouge-style>github</rouge-style>
+						<icons>font</icons>
+						<linkcss>true</linkcss>
+						<stylesdir>assets/styles</stylesdir>
+						<toclevels>3</toclevels>
+						<sectnums>true</sectnums>
+						<sectnumlevels>3</sectnumlevels>
+						<sectanchors>true</sectanchors>
+					</attributes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>asciidoc-to-html</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>process-asciidoc</goal>
+						</goals>
+						<configuration>
+							<backend>html5</backend>
+							<attributes>
+								<source-highlighter>rouge</source-highlighter>
+								<imagesdir>./images</imagesdir>
+								<toc>left</toc>
+								<icons>font</icons>
+								<sectanchors>true</sectanchors>
+								<idprefix />
+								<idseparator>-</idseparator>
+								<docinfo1>true</docinfo1>
+							</attributes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>mavengems</id>
+			<url>mavengem:https://rubygems.org</url>
+		</repository>
+	</repositories>
+
+</project>
