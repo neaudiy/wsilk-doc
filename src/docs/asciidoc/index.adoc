@@ -883,7 +883,7 @@ public class JsonToJavaSerializer extends SingleJavaSerializer<SourceEntityMeta>
 
 === demo地址
 
-https://igit.58corp.com/opensource/wsilk-sample
+https://github.com/neaudiy/wsilk-sample
 
 
 === 加入讨论
