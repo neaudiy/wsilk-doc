@@ -26,7 +26,7 @@ ifndef::sourcedir[:sourcedir: ../../main/java]
 
 == 原理
 
-image::1681993720290.jpg[原理]
+image::https://raw.githubusercontent.com/neaudiy/wsilk-doc/main/src/docs/asciidoc/images/1681993720290.jpg[原理]
 
  
 [#start]
@@ -82,7 +82,7 @@ image::1681993720290.jpg[原理]
 ----
 功能区域说明：
 
-image::1681994218878.jpg[配置说明]
+image::https://github.com/neaudiy/wsilk-doc/raw/main/src/docs/asciidoc/images/1681994218878.jpg[配置说明]
 
 
 [cols=3*]
@@ -166,14 +166,6 @@ image::1681994218878.jpg[配置说明]
 ----
  注意，scope 可以设置成  provided 即可，我们引入它的目的 是要使用他的注解，但是我们环境或者生成的代码不依赖它，所以provided就可以了
  
-=== 问题
-[IMPORTANT]
-====
-假如引入的插件中，报错，找不到tool.jar，你可以找到jdk8中的tool.jar放到相应目录
-
-windows   需要在   ${JAVA_HOME}/lib/tools.jar 目录下
-
-mac/linux 需要在 ${java.home}/../lib/tools.jar 目录下
 
 
 ====
@@ -828,7 +820,7 @@ com.wuba.wsilk.sample.spi.WsilkService
  
    override=true,生成的代码结构如下
    
-image::1681994369412.jpg[原理]
+image::https://raw.githubusercontent.com/neaudiy/wsilk-doc/main/src/docs/asciidoc/images/1681994369412.jpg[原理]
    
  我们能看到三个区域
  
@@ -888,4 +880,4 @@ https://github.com/neaudiy/wsilk-sample
 
 === 加入讨论
 
-image::1681994584675.jpg[原理]
+image::https://raw.githubusercontent.com/neaudiy/wsilk-doc/main/src/docs/asciidoc/images/1681994584675.jpg[原理]
