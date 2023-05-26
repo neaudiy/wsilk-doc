@@ -47,7 +47,7 @@ image::https://raw.githubusercontent.com/neaudiy/wsilk-doc/main/src/docs/asciido
 [source,xml]
 ----
 <plugin>
-  <groupId>com.wuba</groupId>
+  <groupId>io.github.wuba</groupId>
   <artifactId>wsilk-maven-plugin</artifactId>
   <version>${wsilk-version}</version>
 	 <executions>
@@ -68,12 +68,12 @@ image::https://raw.githubusercontent.com/neaudiy/wsilk-doc/main/src/docs/asciido
 	</configuration>
 	<dependencies>
 	 <dependency>
-		<groupId>com.wuba</groupId>
+		<groupId>io.github.wuba</groupId>
 		<artifactId>wsilk-core</artifactId>
 		<version>${wsilk-version}</version>
 	 </dependency>
 	 <dependency>
-	  <groupId>com.wuba</groupId>
+	  <groupId>io.github.wuba</groupId>
 	  <artifactId>wsilk-producer</artifactId>
 	  <version>${wsilk-version}</version>
 	 </dependency>
@@ -133,7 +133,7 @@ image::https://github.com/neaudiy/wsilk-doc/raw/main/src/docs/asciidoc/images/16
  wsilk的核心包，它主要是提供元数据收集器、组织各种生成器、解析和获得各种资源、通过生成器生成源码或者其他文件
  
 <dependency>
-  <groupId>com.wuba</groupId>
+  <groupId>io.github.wuba</groupId>
   <artifactId>wsilk-core</artifactId>
   <version>${wsilk-version}</version>
 </dependency>
@@ -144,7 +144,7 @@ image::https://github.com/neaudiy/wsilk-doc/raw/main/src/docs/asciidoc/images/16
    wsilk的生成器，这个生成器是我们开发的，主要完成一些常规功能，也用于指导大家开发和感受代码生成器
    
 <dependency>
-  <groupId>com.wuba</groupId>
+  <groupId>io.github.wuba</groupId>
   <artifactId>wsilk-producer</artifactId>
   <version>${wsilk-version}</version>
 </dependency>
@@ -158,7 +158,7 @@ image::https://github.com/neaudiy/wsilk-doc/raw/main/src/docs/asciidoc/images/16
 [source,xml]
 ----
 <dependency>
-  <groupId>com.wuba</groupId>
+  <groupId>io.github.wuba</groupId>
   <artifactId>wsilk-producer</artifactId>
   <version>${wsilk-version}</version>
   <scope>provided</scope>
@@ -166,10 +166,6 @@ image::https://github.com/neaudiy/wsilk-doc/raw/main/src/docs/asciidoc/images/16
 ----
  注意，scope 可以设置成  provided 即可，我们引入它的目的 是要使用他的注解，但是我们环境或者生成的代码不依赖它，所以provided就可以了
  
-
-
-====
-
 
 ==  第一个项目
 
@@ -375,13 +371,13 @@ public class UserMapper {
 [source,xml]
 ----
 <dependency>
-  <groupId>com.wuba</groupId>
+  <groupId>io.github.wuba</groupId>
   <artifactId>wsilk-core</artifactId>
   <version>${wsilk-version}</version>
 </dependency>
 
 <dependency>
-  <groupId>com.wuba</groupId>
+  <groupId>io.github.wuba</groupId>
   <artifactId>wsilk-codegen</artifactId>
   <version>${wsilk-version}</version>
 </dependency>
@@ -422,15 +418,11 @@ public class UserMapper {
 		return super.init(em);
 	}
 
-	public BiConsumer<JavaWriter, SourceEntityMeta> propertiesConsumer() {
-		return (writer, em) -> {
-		};
+	public void properties(JavaWriter writer, SourceEntityMeta em) throws IOException {
 	}
 
 	@Override
-	public BiConsumer<JavaWriter, SourceEntityMeta> importConsumer() {
-		return super.importConsumer().andThen((writer, em) -> {
-		});
+	public void importPackage(JavaWriter writer, SourceEntityMeta em) throws IOException {
 	}
 }
 
@@ -440,6 +432,9 @@ public class UserMapper {
  
 [source,java]
 ----
+
+ package build;
+
   @Inherited
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ ElementType.TYPE })
@@ -487,6 +482,9 @@ public class UserMapper {
 
 [source,java]
 ----
+package build;
+
+
 @Support(value = Builder.class, suffix = "Builder", override = false)
 public class BuilderSerializer extends SingleJavaSerializer<SourceEntityMeta> {
 
@@ -553,7 +551,9 @@ public class BuilderSerializer extends SingleJavaSerializer<SourceEntityMeta> {
 }
 ----
 
- 编写好了生成器后打成jar包 假如jar为
+
+在生成器项目下创建文件 META-INF/wsilk 指定生成器的包路径为build
+编写好了生成器后打成jar包 假如jar为
 
 [source,xml]
 ----
@@ -570,7 +570,7 @@ public class BuilderSerializer extends SingleJavaSerializer<SourceEntityMeta> {
 [source,xml]
 ----
 <plugin>
-  <groupId>com.wuba</groupId>
+  <groupId>io.github.wuba</groupId>
   <artifactId>wsilk-maven-plugin</artifactId>
   <version>${wsilk-version}</version>
 	 <executions>
@@ -585,7 +585,7 @@ public class BuilderSerializer extends SingleJavaSerializer<SourceEntityMeta> {
 	</configuration>
 	<dependencies>
 	 <dependency>
-		<groupId>com.wuba</groupId>
+		<groupId>io.github.wuba</groupId>
 		<artifactId>wsilk-core</artifactId>
 		<version>${wsilk-version}</version>
 	 </dependency>
